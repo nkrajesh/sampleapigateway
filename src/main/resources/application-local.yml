@@ -1,0 +1,25 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: apigateway
+eureka:
+    instance:
+      preferIpAddress: true
+      hostname: host.docker.internal
+    client:
+      registerWithEureka: true
+      fetchRegistry: true
+      serviceUrl:
+        defaultZone: http://host.docker.internal:9091/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+ribbon:
+  eureka:
+    enabled: true
+zuul:
+  routes:
+    sampleapp: /emp/**

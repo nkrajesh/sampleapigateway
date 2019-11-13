@@ -1,0 +1,35 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: samplegateway
+  cloud:
+    kubernetes:
+      enabled:  true
+      discovery:
+        enabled:  true    
+appservice:
+  discovery:
+    host: host.docker.internal
+    port: 9091
+eureka:
+    instance:
+      preferIpAddress: false
+      hostname: ${appservice.discovery.host}
+    client:
+      registerWithEureka: false
+      fetchRegistry: false
+      enabled:  false
+      serviceUrl:
+        defaultZone: http://${appservice.discovery.host}:${appservice.discovery.port}/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+ribbon:
+  eureka:
+    enabled: false
+zuul:
+  routes:
+    samplemvc: /emp/**

@@ -1,0 +1,36 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: apigateway
+eureka:
+    instance:
+      preferIpAddress:  false
+      hostname: localhost
+    client:
+      registerWithEureka: false
+      fetchRegistry: false
+      serviceUrl:
+        defaultZone: http://host.docker.internal:9091/eureka
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+ribbon:
+  eureka:
+    enabled: false
+zuul:
+  routes:
+    sampleapp:
+      path: /emp/**
+      serviceId:  sampleapp
+sampleapp:
+  ribbon:
+    eureka:
+      enabled:  false
+    listOfServers: http://${${mongok8sservice}_SERVICE_HOST}:${${mongok8sservice}_SERVICE_PORT}
+    ServerListRefreshInterval: 15000
+mongok8sservice:  SAMPLEMVC_HTTP
+SAMPLEMVC_HTTP_SERVICE_HOST:  localhost
+SAMPLEMVC_HTTP_SERVICE_PORT:  8080
